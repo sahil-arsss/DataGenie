@@ -1,42 +1,21 @@
-const buttons = document.querySelectorAll("button");
+// import express from "express";
+// import dotenv from "dotenv";
+// import queryRoutes from "./routes/queryRoutes.js";
 
-const resultEl = document.getElementById("result");
+// dotenv.config();
+// const app = express();
+// const PORT = process.env.PORT || 5000;
 
-const playerScoreEl = document.getElementById("user-score");
+// app.use(express.json()); 
+// app.use("/api", queryRoutes);
 
-const computerScoreEl = document.getElementById("computer-score");
+// app.listen(PORT, () => {
+//   console.log(`🚀 Server running on http://localhost:${PORT}`);
+// });
 
-let playerScore = 0;
-let computerScore = 0;
 
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const result = playRound(button.id, computerPlay());
-    resultEl.textContent = result;
-    
-  });
-});
+// server.js or routes/api.js
 
-function computerPlay() {
-  const choices = ["rock", "paper", "scissors"];
-  const randomChoice = Math.floor(Math.random() * choices.length);
-  return choices[randomChoice];
-}
 
-function playRound(playerSelection, computerSelection) {
-  if (playerSelection === computerSelection) {
-    return "It's a tie!";
-  } else if (
-    (playerSelection === "rock" && computerSelection === "scissors") ||
-    (playerSelection === "paper" && computerSelection === "rock") ||
-    (playerSelection === "scissors" && computerSelection === "paper")
-  ) {
-    playerScore++;
-    playerScoreEl.textContent = playerScore;
-    return "You win! " + playerSelection + " beats " + computerSelection;
-  } else {
-    computerScore++;
-    computerScoreEl.textContent = computerScore;
-    return "You lose! " + computerSelection + " beats " + playerSelection;
-  }
-}
+
+
