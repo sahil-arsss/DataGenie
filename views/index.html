@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My User App</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <h1>Welcome to User Dashboard</h1>
+
+  <form id="userForm">
+    <input type="text" id="prompt1" placeholder="prompt1" required />
+    <button type="submit">Add User</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const prompt = document.getElementById('prompt1').value;
+
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ "prompt": prompt   }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      const resultDiv = document.getElementById('result');
+
+    // Display the SQL
+    let html = `<p><strong>Generated SQL:</strong> ${data.sql}</p>`;
+
+    // Display results as a table (optional)
+    if (Array.isArray(data.results) && data.results.length > 0) {
+      html += `<table border="1"><thead><tr>`;
+      // Get table headers from first row keys
+      Object.keys(data.results[0]).forEach(key => {
+        html += `<th>${key}</th>`;
+      });
+      html += `</tr></thead><tbody>`;
+      // Fill table rows
+      data.results.forEach(row => {
+        html += `<tr>`;
+        Object.values(row).forEach(value => {
+          html += `<td>${value}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += `</tbody></table>`;
+    } else {
+      html += `<p>No results returned.</p>`;
+    }
+
+    resultDiv.innerHTML = html;
+    });
+  </script>
+</body>
+</html>
