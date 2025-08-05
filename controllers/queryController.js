@@ -3,7 +3,7 @@ import { connection } from "../db/mysql.js";
 
 export async function handleQuery(req, res) {
   const { prompt } = req.body;
-
+    
   try {
     const sql = await generateSQL(prompt);
 
