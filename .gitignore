@@ -1,0 +1,4 @@
+/node_modules
+/.env
+/code_to_genrate_sql.js
+/codetotes.js
