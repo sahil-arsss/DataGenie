@@ -9,9 +9,12 @@ export async function generateSQL(prompt) {
   });
 
   let sql = response.text.trim();
-
+  
   if (sql.startsWith("```")) {
     sql = sql.replace(/```(?:sql)?/gi, "").replace(/```$/, "").trim();
+  }
+  if (!/^select\s+/i.test(sql)) {
+    throw new Error("Only SELECT queries are allowed!");
   }
 
 //   if (!sql.toLowerCase().startsWith("select")) {
