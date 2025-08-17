@@ -6,7 +6,7 @@ export async function handleQuery(req, res) {
     
   try {
     const sql = await generateSQL(prompt);
-
+    
     connection.query(sql, (err, results) => {
       if (err) {
         console.error("SQL Execution Error:", err);
