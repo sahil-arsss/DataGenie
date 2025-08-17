@@ -4,13 +4,91 @@
   <meta charset="UTF-8" />
   <title>My User App</title>
   <link rel="stylesheet" href="/style.css" />
+  <style>
+    body {
+      font-family: "Georgia", serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      background: #2c3e50;
+      color: #fff;
+      padding: 20px;
+      margin: 0;
+      font-size: 28px;
+    }
+    form {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input[type="text"] {
+      width: 70%;
+      padding: 12px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 12px 20px;
+      background: #2c3e50;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #1a252f;
+    }
+    #result {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background: #2c3e50;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
   <h1>Welcome to User Dashboard</h1>
 
   <form id="userForm">
-    <input type="text" id="prompt1" placeholder="prompt1" required />
-    <button type="submit">Add User</button>
+    <input type="text" id="prompt1" placeholder="Describe the data you want" required />
+    <button type="submit">Click Me</button>
   </form>
 
   <div id="result"></div>
@@ -25,38 +103,34 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "prompt": prompt   }),
+        body: JSON.stringify({ "prompt": prompt }),
       });
 
       const data = await res.json();
       console.log(data);
       const resultDiv = document.getElementById('result');
 
-    // Display the SQL
-    let html = `<p><strong>Generated SQL:</strong> ${data.sql}</p>`;
+      let html = `<p><strong>Generated SQL:</strong> ${data.sql}</p>`;
 
-    // Display results as a table (optional)
-    if (Array.isArray(data.results) && data.results.length > 0) {
-      html += `<table border="1"><thead><tr>`;
-      // Get table headers from first row keys
-      Object.keys(data.results[0]).forEach(key => {
-        html += `<th>${key}</th>`;
-      });
-      html += `</tr></thead><tbody>`;
-      // Fill table rows
-      data.results.forEach(row => {
-        html += `<tr>`;
-        Object.values(row).forEach(value => {
-          html += `<td>${value}</td>`;
+      if (Array.isArray(data.results) && data.results.length > 0) {
+        html += `<table><thead><tr>`;
+        Object.keys(data.results[0]).forEach(key => {
+          html += `<th>${key}</th>`;
         });
-        html += `</tr>`;
-      });
-      html += `</tbody></table>`;
-    } else {
-      html += `<p>No results returned.</p>`;
-    }
+        html += `</tr></thead><tbody>`;
+        data.results.forEach(row => {
+          html += `<tr>`;
+          Object.values(row).forEach(value => {
+            html += `<td>${value}</td>`;
+          });
+          html += `</tr>`;
+        });
+        html += `</tbody></table>`;
+      } else {
+        html += `<p>No results returned.</p>`;
+      }
 
-    resultDiv.innerHTML = html;
+      resultDiv.innerHTML = html;
     });
   </script>
 </body>
